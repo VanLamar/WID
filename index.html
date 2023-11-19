@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WID Modding Documentation</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/vs2015.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+    <div class="container">
+        <header class="site-header">
+            <h1>WID Modding Docs</h1>
+            <nav class="site-nav">
+                <a href="#introduction" class="nav-link">Introduction</a>
+                <a href="#api-setup" class="nav-link">API Setup</a>
+                <a href="#mod-structure" class="nav-link">Mod Structure</a>
+                <a href="#mod-code-example" class="nav-link">Code Example</a>
+            </nav>
+        </header>
+        <main>
+            <section id="introduction" class="content-section">
+                <h2>Introduction to WIDAPI</h2>
+                <p>Welcome to the official modding guide for "Whispers in Darkness". This documentation is designed to help you navigate the process of modding using the Whispers in Darkness API (WIDAPI).</p>
+                <p>
+                    WIDAPI is the gateway for modding "Whispers in Darkness" and serves as a bridge between your mods and the game. It's split into two main components:
+                    <ol>
+                        <li><strong>WIDAPI:</strong> The external interface (or program) you interact with to manage and run mods.</li>
+                        <li><strong>GameAPI:</strong> The in-game API that takes compiled mod data and integrates it into the game environment.</li>
+                    </ol>
+                </p>
+                <p>
+                    Unlike traditional modding approaches, WIDAPI does not compile scripts in-game. Instead, it relies on pre-compiled script data that GameAPI then uses to render mods in the game. This documentation aims to cover all the necessary information you'll need, but should you have any further questions, the community is always here to help on our official Discord server at <a href="https://discord.gg/9eggmTejmY" target="_blank">https://discord.gg/9eggmTejmY</a>.
+                </p>
+            </section>
+            <!-- API Setup Section -->
+            <section id="api-setup" class="content-section">
+                <h2>Setting Up WIDAPI for "Whispers in Darkness"</h2>
+                <p>To integrate mods into "Whispers in Darkness", the modding API (WIDAPI) must be placed in the game's root directory, where the game's executable file resides.</p>
+                <p>Follow these steps to set up WIDAPI:</p>
+                <ol>
+                    <li>Download WIDAPI from the official source.</li>
+                    <li>Locate the game's root folder (where the .exe file is located).</li>
+                    <li>Place the downloaded WIDAPI files in this directory.</li>
+                </ol>
+                <p>Mods for the game should be organized within the following path:</p>
+                <code>Whispers in Darkness_Data\StreamingAssets\Mods</code>
+                <p>Each mod should be a separate folder within the Mods directory.</p>
+            </section>
+
+            <section id="mod-structure" class="content-section">
+                <h2>Mod Folder Structure</h2>
+                <p>A mod for "Whispers in Darkness" is comprised of a folder containing at least two main components:</p>
+                <ul>
+                    <li><code>config.json</code> - A configuration file that defines the mod metadata.</li>
+                    <li><code>assets</code> - A folder that includes script files and graphical assets.</li>
+                </ul>
+                <p>The <code>config.json</code> file should contain the following information:</p>
+                <pre><code class="json">
+{
+  "Name": "Test Mod",
+  "Description": "This is a sample mod for demonstration purposes.",
+  "Version": "1.0.0",
+  "Author": "VanLamar"
+}
+                    </code></pre>
+                <p>The <code>assets</code> folder is expected to contain:</p>
+                <ul>
+                    <li><code>scripts</code> - Script files that interact with the game.</li>
+                    <li><code>sprites</code> - Image files used in the game (e.g., character sprites).</li>
+                    <li><code>dialogues</code> - (Optional) A folder for dialogue files if the mod includes new or altered NPC interactions.</li>
+                </ul>
+            </section>
+
+            <section id="mod-code-example" class="content-section">
+                <h2>Mod Code Example</h2>
+                <p>Below is an example of a C# script for a mod named "Test". This script demonstrates the basic structure and required elements for a mod to interact with the game through WIDAPI:</p>
+                <pre><code class="language-csharp">
+public class TestMod : GameAPI {
+    // Initialization method that runs once when the mod is loaded
+    public override void Initialization() {
+        // Create a new NPC object with a name and location
+        var newNpc = new GameNPC("NPC_Name", "Location_Title");
+        // Assign the sprite for the NPC
+        newNpc.path = @"assets/sprites/npc_sprite.png";
+        // Set the NPC's position on the screen
+        newNpc.position = new Vector3(0.04f, -0.17f, 0);
+
+        // Define the portraits for the NPC, used in dialogue
+        newNpc.pathPortraits = new List<string> {
+            @"assets/sprites/npc_portrait.png"
+        };
+
+        // Specify the paths to the dialogue files for each language
+        newNpc.pathDialogues = new List<string> {
+            @"assets/dialogues/dialogue_en.json",
+            @"assets/dialogues/dialogue_ua.json",
+            @"assets/dialogues/dialogue_ph.json"
+        };
+
+        // List the supported languages for the dialogues
+        newNpc.pathDialoguesLangs = new List<string> { "en", "ua", "ph" };
+
+        // Call the API method to create the NPC in the game
+        MakeNPC(newNpc);
+    }
+
+    // Loop method that runs every frame of the game
+    public override void Loop() {
+        // Code for continuous checks or updates can be added here
+    }
+}
+                </code></pre>
+                <p>Replace "NPC_Name", "Location_Title", and file paths with the actual data relevant to your mod.</p>
+
+                <h2>Utility Methods</h2>
+                <p>WIDAPI provides a set of utility methods that simplify common modding tasks:</p>
+
+                <h3>GetObjectScriptByIndex</h3>
+                <p>Retrieve a mod-created object by its index:</p>
+                <pre><code class="language-csharp">// Retrieve an NPC object created by a mod
+GameNPC myNpc = GetObjectScriptByIndex(index) as GameNPC;</code></pre>
+                <p>Use <code>WIDConsole.Print</code> or <code>WIDConsole.PrintError</code> to output the list of indexes and objects to the console for debugging:</p>
+                <pre><code class="language-csharp">// Output all NPC indexes and names
+foreach(var npc in ObjectScript) {
+    WIDConsole.Print($"{ObjectScript.IndexOf(npc)}: {npc.name}");
+}</code></pre>
+
+                <h3>LoadTextAssetFromPath</h3>
+                <p>Load text assets, such as dialogues, without needing to specify the full path:</p>
+                <pre><code class="language-csharp">// Load a dialogue file
+TextAsset dialogue = LoadTextAssetFromPath("dialogue.json");</code></pre>
+
+                <h3>LoadSpriteFromPath</h3>
+                <p>Load sprites in a similar manner:</p>
+                <pre><code class="language-csharp">// Load a sprite for an NPC
+Sprite npcSprite = LoadSpriteFromPath("npc_sprite.png");</code></pre>
+
+                <h3>Achievement Method</h3>
+                <p>Unlock an in-game achievement using its original game index name:</p>
+                <pre><code class="language-csharp">// Unlock an achievement
+Achievement("Achievement_Index_Name");</code></pre>
+
+                <p class="note">Note: Replace placeholder strings such as "dialogue.json", "npc_sprite.png", and "Achievement_Index_Name" with actual asset names and achievement indexes used in your game.</p>
+            </section>
+        </main>
+        <footer class="site-footer">
+            <p>&copy; 2023 Nevant Studio | WIDAPI</p>
+        </footer>
+    </div>
+</body>
+</html>
