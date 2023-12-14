@@ -118,6 +118,7 @@ nav ul {
     display: flex;
     align-items: center;
     padding-left: 0; 
+
 }
 
 nav ul li {
@@ -147,6 +148,7 @@ nav ul li ul {
     min-width: 200px;
     box-shadow: 2px 2px 5px rgba(0,0,0,.5);
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.9);
 }
 
 nav ul li:hover ul {
