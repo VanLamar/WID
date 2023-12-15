@@ -6,6 +6,7 @@
     box-sizing: border-box;
 }
 
+
 body {
     font-family: 'Open Sans', sans-serif;
     color: #fff;
@@ -26,12 +27,6 @@ body {
     background-color: rgba(0, 0, 0, 0.7); 
     padding: 20px;
     margin-top: -100vh;
-}
-
-.wrapper {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
 }
 
 
@@ -165,7 +160,6 @@ nav ul li ul li a {
 
 
 main {
-    padding: 40px 20px;
     background: #fff; 
     box-shadow: 0 2px 5px rgba(0,0,0,.1); 
     margin-top: 20px; 
@@ -187,11 +181,6 @@ footer {
     margin-top: 40px; 
 }
 
-@media (max-width: 768px) {
-    .content {
-        margin-top: 0;
-    }
-}
 
 
 @media (max-width: 768px) {
