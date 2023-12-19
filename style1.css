@@ -204,3 +204,40 @@ code {
     color: #dcdcaa;
     font-family: 'Courier New', Courier, monospace;
 }
+
+#toc_container {
+    background-color: #f9f9f9;
+    border: 1px solid #aaa;
+    padding: 10px;
+    margin-top: 20px;
+    width: auto;
+}
+
+.toc_title {
+    text-align: center;
+    font-weight: bold;
+}
+
+.toc_list {
+    list-style: none;
+    padding: 0;
+}
+
+    .toc_list li {
+        margin-bottom: 5px;
+    }
+
+        .toc_list li a {
+            color: #00f;
+            text-decoration: none;
+        }
+
+        .toc_list li ul {
+            list-style-type: none;
+            margin-top: 5px;
+            margin-left: 20px;
+        }
+
+            .toc_list li ul li {
+                font-size: smaller;
+            }
